@@ -155,11 +155,12 @@ export class NotionPageRenderer {
     public readonly imageSavePath: string,
     logger: AstroIntegrationLogger
   ) {
-    // Create a sub-logger labelled with the page name
-    const pageTitle = transformedPropertySchema.title.safeParse(page.properties.Name);
-    this.#logger = logger.fork(`page ${page.id} (Name ${pageTitle.success ? pageTitle.data : 'unknown'})`);
+    // Create a sub-logger labeled with the page name
+    const titleProp = Object.entries(page.properties).find(([_, property]) => property.type === 'title');
+    const pageTitle = transformedPropertySchema.title.safeParse(titleProp ? titleProp[1] : {});
+    this.#logger = logger.fork(`page ${page.id} (Title ${pageTitle.success ? pageTitle.data : 'unknown'})`);
     if (!pageTitle.success) {
-      this.#logger.warn(`Failed to parse property Name as title: ${pageTitle.error.toString()}`);
+      this.#logger.warn(`Failed to parse title property from page: ${pageTitle.error.toString()}`);
     }
   }
 
