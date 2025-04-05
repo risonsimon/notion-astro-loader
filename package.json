@@ -7,12 +7,12 @@
     "astro",
     "notion"
   ],
-  "homepage": "https://github.com/Kiritoking/notion-astro-rev/tree/main/packages/notion-astro-loader",
+  "homepage": "https://github.com/KiritoKing/notion-astro-loader",
   "bugs": {
-    "url": "https://github.com/Kiritoking/notion-astro-rev/issues",
+    "url": "https://github.com/KiritoKing/notion-astro-loader/issues",
     "email": "kiritoclzh@gmail.com"
   },
-  "repository": "github:Kiritoking/notion-astro-rev",
+  "repository": "github:KiritoKing/notion-astro-loader",
   "license": "MIT",
   "type": "module",
   "exports": {
