@@ -45,7 +45,7 @@
     "build": "tsc --build",
     "build:watch": "tsc --watch",
     "clean": "crossrm dist tsconfig.tsbuildinfo",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "pnpm run build",
     "test": "vitest"
   },
   "dependencies": {
