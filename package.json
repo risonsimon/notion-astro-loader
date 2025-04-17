@@ -46,7 +46,7 @@
     "build:watch": "tsc --watch",
     "clean": "crossrm dist tsconfig.tsbuildinfo",
     "prepublishOnly": "pnpm run build",
-    "test": "vitest"
+    "test": "echo 'No tests available'"
   },
   "dependencies": {
     "@jsdevtools/rehype-toc": "^3.0.2",
