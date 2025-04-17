@@ -72,9 +72,37 @@ jobs:
       - name: Run tests
         run: pnpm test
       
-      - name: Get version from package.json
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+      
+      - name: Bump patch version
+        run: pnpm version patch --no-git-tag-version
+      
+      - name: Get new version from package.json
         id: package-version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push version update
+        run: |
+          git add package.json package-lock.json
+          git commit -m "Bump version to v${{ steps.package-version.outputs.version }} [skip ci]"
+          git push
+      
+      - name: Build
+        run: pnpm build
+      
+      - name: Setup Node.js with registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Publish to npm
+        run: pnpm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -83,6 +111,19 @@ jobs:
           name: Release v${{ steps.package-version.outputs.version }}
           draft: false
           generate_release_notes: true
+          body: |
+            ## 📦 NPM Package
+            https://www.npmjs.com/package/@chlorinec-pkgs/notion-astro-loader/v/${{ steps.package-version.outputs.version }}
+            
+            ```
+            npm install @chlorinec-pkgs/notion-astro-loader@${{ steps.package-version.outputs.version }}
+            ```
+            
+            or
+            
+            ```
+            pnpm add @chlorinec-pkgs/notion-astro-loader@${{ steps.package-version.outputs.version }}
+            ```
           token: ${{ secrets.GITHUB_TOKEN }}
   
   # Job for creating test releases with hash tag on pull requests
