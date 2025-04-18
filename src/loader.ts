@@ -21,6 +21,11 @@ export interface NotionLoaderOptions
    */
   rehypePlugins?: RehypePlugins;
   /**
+   * The name of the collection, only used for logging and debugging purposes.
+   * Useful for multiple loaders to differentiate their logs.
+   */
+  collectionName?: string;
+  /**
    * The path to save the images.
    * Defaults to 'public'.
    */
@@ -74,6 +79,7 @@ export function notionLoader({
   sorts,
   filter,
   archived,
+  collectionName,
   imageSavePath = DEFAULT_IMAGE_SAVE_PATH,
   rehypePlugins = [],
   experimentalCacheImageInData = false,
@@ -101,7 +107,7 @@ export function notionLoader({
   const processor = buildProcessor(resolvedRehypePlugins);
 
   return {
-    name: 'notion-loader',
+    name: collectionName ? `notion-loader/${collectionName}` : 'notion-loader',
     schema: async () =>
       notionPageSchema({
         properties: await propertiesSchemaForDatabase(notionClient, database_id),
