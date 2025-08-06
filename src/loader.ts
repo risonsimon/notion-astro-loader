@@ -151,7 +151,7 @@ export function notionLoader({
 
         // If the page has been updated, re-render it
         if (existingPage?.digest !== page.last_edited_time) {
-          const realSavePath = path.resolve(process.cwd(), 'public', 'images', 'notion');
+          const realSavePath = path.resolve(process.cwd(), 'src', imageSavePath);
 
           const renderer = new NotionPageRenderer(notionClient, page, realSavePath, log_pg);
 
