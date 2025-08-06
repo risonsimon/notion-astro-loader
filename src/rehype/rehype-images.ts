@@ -27,11 +27,17 @@ export function rehypeImages() {
             const index = imageOccurrenceMap.get(node.properties.src) || 0;
             imageOccurrenceMap.set(node.properties.src, index + 1);
 
-            node.properties['__ASTRO_IMAGE__'] = JSON.stringify({ ...props, index });
+            // Convert the relative path to a public URL
+            // The image path comes in as "folder/file.png" from the public/images/notion directory
+            // We convert this to "/images/notion/folder/file.png" for the public URL
+            const srcPath = `/images/notion/${props.src}`;
 
-            Object.keys(props).forEach((prop) => {
-              delete node.properties[prop];
-            });
+            // Use a regular img tag for public assets (they'll be copied to dist automatically)
+            node.properties.src = srcPath;
+            if (props.alt) {
+              node.properties.alt = props.alt;
+            }
+            // Don't use Astro Image processing since these are static public assets
           }
         }
       });

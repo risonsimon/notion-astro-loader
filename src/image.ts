@@ -66,7 +66,7 @@ export async function saveImageFromAWS(url: string, dir: string, options: SaveOp
     // If ignoreCache is true or the file doesn't exist, download it
     const response = await fetch(url);
     const buffer = await response.arrayBuffer();
-    fse.writeFile(filePath, new Uint8Array(buffer));
+    await fse.writeFile(filePath, new Uint8Array(buffer));
 
     log?.(`Saved image \`${fileName}\` ${dim(`created \`${filePath}\``)}`);
     tag?.('download');
@@ -75,10 +75,9 @@ export async function saveImageFromAWS(url: string, dir: string, options: SaveOp
     tag?.('cached');
   }
 
-  const relBasePath = path.resolve(process.cwd(), VIRTUAL_CONTENT_ROOT);
-
-  // Relative path of the image from the virtual content root
-  return path.relative(relBasePath, filePath);
+  // Return the path relative to public/images/notion for URL generation
+  // This will be something like "edeb0bcc-9c82-4a04-b1cf-d3ce5e635950/79398d7e-30e3-4ee0-b610-392d2922cb07.png"
+  return `${parentId}/${objId}.${ext}`;
 }
 
 /**

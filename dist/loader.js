@@ -82,7 +82,7 @@ export function notionLoader({ database_id, filter_properties, sorts, filter, ar
                 const existingPage = store.get(page.id);
                 // If the page has been updated, re-render it
                 if (existingPage?.digest !== page.last_edited_time) {
-                    const realSavePath = path.resolve(process.cwd(), 'src', imageSavePath);
+                    const realSavePath = path.resolve(process.cwd(), 'public', 'images', 'notion');
                     const renderer = new NotionPageRenderer(notionClient, page, realSavePath, log_pg);
                     const data = await parseData(await renderer.getPageData(experimentalCacheImageInData, experimentalRootSourceAlias));
                     const renderPromise = renderer.render(processor).then((rendered) => {
