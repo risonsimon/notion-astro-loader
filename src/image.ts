@@ -75,10 +75,9 @@ export async function saveImageFromAWS(url: string, dir: string, options: SaveOp
     tag?.('cached');
   }
 
-  const relBasePath = path.resolve(process.cwd(), VIRTUAL_CONTENT_ROOT);
-
-  // Relative path of the image from the virtual content root for Astro asset processing
-  return path.relative(relBasePath, filePath);
+  // Return the path relative to the public/images/notion directory
+  // This will be something like "edeb0bcc-9c82-4a04-b1cf-d3ce5e635950/79398d7e-30e3-4ee0-b610-392d2922cb07.png"
+  return `${parentId}/${objId}.${ext}`;
 }
 
 /**

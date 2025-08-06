@@ -27,24 +27,21 @@ export function rehypeImages() {
             const index = imageOccurrenceMap.get(node.properties.src) || 0;
             imageOccurrenceMap.set(node.properties.src, index + 1);
 
-            // Convert the relative path to use Astro's Image component
-            // The image path comes in as something like "../../assets/images/notion/folder/file.png"
-            // We convert this to "~/assets/images/notion/folder/file.png" for Astro asset processing
-            const pathParts = props.src.split('/');
-            const notionIndex = pathParts.indexOf('notion');
-            const relativePath = pathParts.slice(notionIndex + 1).join('/');
-            const srcPath = `~/assets/images/notion/${relativePath}`;
+            // Convert the relative path from the loader to a public URL
+            // The image path comes in as something like "folder/file.png" from the public directory
+            // We convert this to "/images/notion/folder/file.png" for the public URL
+            const srcPath = `/images/notion/${props.src}`;
 
-            // Use Astro's Image component for optimization
-            node.properties['__ASTRO_IMAGE__'] = JSON.stringify({ 
-              ...props, 
-              src: srcPath,
-              index 
-            });
-
-            // Remove original properties so Astro Image component takes over
+            // Use a regular img tag instead of Astro Image component for public assets
+            node.properties.src = srcPath;
+            if (props.alt) {
+              node.properties.alt = props.alt;
+            }
+            // Remove other properties but keep src and alt
             Object.keys(props).forEach((prop) => {
-              delete node.properties[prop];
+              if (prop !== 'alt') {
+                delete node.properties[prop];
+              }
             });
           }
         }
