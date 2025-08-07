@@ -58,7 +58,7 @@ export async function saveImageFromAWS(url, dir, options = {}) {
         log?.(`Skipped caching image \`${fileName}\` ${dim(`cached at \`${filePath}\``)}`);
         tag?.('cached');
     }
-    // Return the path relative to public/images/notion for URL generation
+    // Return the path relative to public directory for use in URLs
     // This will be something like "edeb0bcc-9c82-4a04-b1cf-d3ce5e635950/79398d7e-30e3-4ee0-b610-392d2922cb07.png"
     return `${parentId}/${objId}.${ext}`;
 }

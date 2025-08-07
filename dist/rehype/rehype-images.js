@@ -18,15 +18,15 @@ export function rehypeImages() {
                     const index = imageOccurrenceMap.get(node.properties.src) || 0;
                     imageOccurrenceMap.set(node.properties.src, index + 1);
                     // Convert the relative path to a public URL
-                    // The image path comes in as "folder/file.png" from the public/images/notion directory
+                    // The image path now comes in as "folder/file.png" from the public directory
                     // We convert this to "/images/notion/folder/file.png" for the public URL
                     const srcPath = `/images/notion/${props.src}`;
-                    // Use a regular img tag for public assets (they'll be copied to dist automatically)
+                    // Use a regular img tag instead of Astro Image component for public assets
                     node.properties.src = srcPath;
                     if (props.alt) {
                         node.properties.alt = props.alt;
                     }
-                    // Don't use Astro Image processing since these are static public assets
+                    // Remove any Astro image processing since these are static public assets
                 }
             }
         });
