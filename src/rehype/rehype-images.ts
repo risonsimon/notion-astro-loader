@@ -27,8 +27,8 @@ export function rehypeImages() {
             const index = imageOccurrenceMap.get(node.properties.src) || 0;
             imageOccurrenceMap.set(node.properties.src, index + 1);
 
-            // Convert the relative path from the loader to a public URL
-            // The image path comes in as something like "folder/file.png" from the public directory
+            // Convert the relative path to a public URL
+            // The image path now comes in as "folder/file.png" from the public directory
             // We convert this to "/images/notion/folder/file.png" for the public URL
             const srcPath = `/images/notion/${props.src}`;
 
@@ -37,12 +37,7 @@ export function rehypeImages() {
             if (props.alt) {
               node.properties.alt = props.alt;
             }
-            // Remove other properties but keep src and alt
-            Object.keys(props).forEach((prop) => {
-              if (prop !== 'alt') {
-                delete node.properties[prop];
-              }
-            });
+            // Remove any Astro image processing since these are static public assets
           }
         }
       });
